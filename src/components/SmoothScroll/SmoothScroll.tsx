@@ -7,30 +7,25 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { isCoarsePointer, isLowPower, prefersReducedMotion } from "@/lib/perf";
 import { setLenis } from "@/lib/scroll";
 
-/**
- * Lenis smooth scroll driven by GSAP's ticker, so there is exactly one rAF loop
- * and ScrollTrigger always reads the same scroll position Lenis just produced.
- *
- * It is skipped (native scrolling) on touch devices, low-power devices and when the
- * user asks for reduced motion. It also publishes `data-perf` on <html> for CSS.
- */
+// Lenis smooth scroll, driven by GSAP's ticker so there is a single animation loop
+// and ScrollTrigger always sees the same scroll position Lenis just produced.
+// Skipped (native scroll) for touch, low-power devices and reduced motion.
 export default function SmoothScroll() {
   useEffect(() => {
-    const root = document.documentElement;
-    const low = isLowPower();
-    root.dataset.perf = low ? "low" : "high";
+    const lowPower = isLowPower();
+    document.documentElement.dataset.perf = lowPower ? "low" : "high";
 
-    if (prefersReducedMotion() || isCoarsePointer() || low) return;
+    if (prefersReducedMotion() || isCoarsePointer() || lowPower) return;
 
-    const lenis = new Lenis({ autoRaf: false, lerp: 0.1, smoothWheel: true });
+    const lenis = new Lenis({ autoRaf: false, lerp: 0.1 });
     setLenis(lenis);
     lenis.on("scroll", ScrollTrigger.update);
 
-    const tick = (time: number) => lenis.raf(time * 1000);
-    gsap.ticker.add(tick);
+    const update = (time: number) => lenis.raf(time * 1000);
+    gsap.ticker.add(update);
 
     return () => {
-      gsap.ticker.remove(tick);
+      gsap.ticker.remove(update);
       setLenis(null);
       lenis.destroy();
     };

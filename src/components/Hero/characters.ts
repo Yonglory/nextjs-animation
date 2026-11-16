@@ -1,26 +1,23 @@
-import type { FluffyEars, FluffyColor, FluffyFace } from "@/components/Fluffy/Fluffy";
+import type { FluffyColor, FluffyEars, FluffyFace } from "@/components/Fluffy/Fluffy";
 
 export interface HeroCharacter {
   id: string;
   color: FluffyColor;
   face: FluffyFace;
   ears: FluffyEars;
-  /** Desktop/tablet position (percent of the stage) of the character's center. */
+  // Center of the character, in percent of the stage.
   x: number;
   y: number;
-  /** Optional mobile position override. */
+  // Same, but on mobile (defaults to x / y).
   mx?: number;
   my?: number;
-  /** Size multiplier relative to the hero's --unit. */
+  // Multiplier of the hero's --unit size.
   size: number;
-  /**
-   * 1 = always shown, 2 = tablet and up, 3 = desktop only.
-   * Dropped by one level on low-power devices (see hero.module.scss and Hero.tsx).
-   */
+  // 1: always shown, 2: tablet and up, 3: desktop only.
   tier: 1 | 2 | 3;
 }
 
-/** Back layer: small and slow. Mid layer: medium. Front layer: big and fast. */
+// Back layer is small and slow, front layer is big and fast.
 export const HERO_LAYERS: { depth: number; characters: HeroCharacter[] }[] = [
   {
     depth: 0.4,

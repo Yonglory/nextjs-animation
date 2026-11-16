@@ -10,8 +10,7 @@
 
 html {
   -webkit-text-size-adjust: 100%;
-  // Reserve the scrollbar gutter so locking scroll during the preloader
-  // does not shift the layout.
+  // Keeps the layout from shifting when scroll is locked during loading.
   scrollbar-gutter: stable;
 }
 

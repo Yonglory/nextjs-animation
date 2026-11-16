@@ -7,7 +7,6 @@
   display: grid;
   place-items: center;
   background: color(sky);
-  // Only the curtain transform is animated.
   will-change: transform;
 }
 
@@ -19,7 +18,6 @@
 
 .character {
   width: clamp(7.5rem, 20vw, 11rem);
-  // Same motion as the reference's `loader-breathe`.
   animation: breathe 1s ease-in-out infinite alternate;
 
   @include reduced-motion {
@@ -52,7 +50,7 @@
   letter-spacing: 0.04em;
 }
 
-// Curved lower edge that rides the curtain upward.
+// Curved bottom edge, lifts together with the curtain.
 .curve {
   position: absolute;
   top: calc(100% - 1px);

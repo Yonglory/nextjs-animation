@@ -16,7 +16,7 @@
   line-height: 1;
   white-space: nowrap;
   cursor: pointer;
-  // Resting pose: tucked into the corner, like the reference's CTA.
+  // Resting pose: slightly tucked into the corner.
   transform: translate(2%, 8%);
   transition: transform 350ms $ease-hover;
   will-change: transform;
@@ -43,10 +43,6 @@
     outline-offset: 5px;
     border-radius: 2rem;
     transform: translate(-2%, 2%) scale(1.06) rotate(-3deg);
-  }
-
-  @include reduced-motion {
-    transition-duration: 150ms;
   }
 }
 

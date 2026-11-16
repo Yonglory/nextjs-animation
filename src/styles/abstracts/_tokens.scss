@@ -1,6 +1,3 @@
-// Design tokens. Colors are also emitted as CSS custom properties (see globals.scss)
-// so they can be consumed from SCSS (`color(navy)`) or from inline styles.
-
 $colors: (
   "white": #ffffff,
   "cloud": #f4f9ff,
@@ -16,16 +13,11 @@ $colors: (
 $font-display: var(--font-display), "Baloo 2", system-ui, sans-serif;
 $font-body: var(--font-body), "Nunito", system-ui, sans-serif;
 
-// Easing curves. Keep in sync with src/lib/motion.ts (EASE.hover).
 $ease-hover: cubic-bezier(0.2, 0.75, 0.25, 1);
-$ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-
-$duration-fast: 250ms;
 $duration-base: 350ms;
 
-$z-stage: 1;
 $z-chrome: 10;
 $z-preloader: 100;
 
-// Fluid page gutter, same recipe as the reference: clamp(1.4rem, 3vw, 2.8rem).
+// Page side padding.
 $gutter: clamp(1.25rem, 3vw, 2.8rem);
