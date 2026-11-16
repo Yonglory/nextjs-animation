@@ -1,13 +1,12 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-// Register plugins exactly once, on the client only.
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
   gsap.defaults({ ease: "power3.out" });
-  // Don't slow tweens down after a long frame; keeps scroll-linked motion honest with Lenis.
+  // Lenis and ScrollTrigger need real time, so don't let GSAP slow tweens down after a long frame.
   gsap.ticker.lagSmoothing(0);
-  // Mobile URL-bar show/hide fires resize; refreshing on it causes jumps.
+  // The mobile URL bar showing/hiding fires resize and would refresh triggers mid-scroll.
   ScrollTrigger.config({ ignoreMobileResize: true });
 }
 

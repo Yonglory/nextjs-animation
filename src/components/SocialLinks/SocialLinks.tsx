@@ -15,10 +15,7 @@ const LINKS = [
   },
 ] as const;
 
-/**
- * Decorative social buttons: no real destination, but with full hover/focus states.
- * Each `<li>` is the GSAP entrance target; the inner `<a>` owns the CSS hover transform.
- */
+// The <li> is animated by GSAP on load, the <a> inside handles the CSS hover.
 export default function SocialLinks() {
   return (
     <ul className={styles.list} aria-label="Social links">

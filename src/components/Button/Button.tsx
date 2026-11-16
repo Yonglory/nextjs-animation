@@ -5,12 +5,11 @@ import { scrollToTarget } from "@/lib/scroll";
 import styles from "./button.module.scss";
 
 interface ButtonProps {
-  /** In-page anchor, e.g. "#collection". The button smooth-scrolls to it. */
+  // In-page anchor such as "#collection".
   href: string;
   children: ReactNode;
 }
 
-/** Blob-shaped call to action. Hover/focus motion is pure CSS (transform only). */
 export default function Button({ href, children }: ButtonProps) {
   const onClick = (e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();

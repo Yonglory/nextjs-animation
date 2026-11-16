@@ -8,14 +8,13 @@
   }
 }
 
-// Scroll is locked while the preloader is on screen (class removed from JS).
+// Added in layout.tsx, removed when the preloader finishes.
 html.is-loading {
   overflow: hidden;
-  // The reserved scrollbar gutter is painted by <html>; match the preloader so no white strip shows.
+  // The scrollbar gutter is painted by <html>, so match the preloader color.
   background: color(sky);
 }
 
-// Honor reduced motion for any stray CSS animation/transition.
 @include reduced-motion {
   *,
   *::before,

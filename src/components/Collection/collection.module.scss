@@ -12,11 +12,10 @@ $tints: (
 .collection {
   position: relative;
   background: color(white);
-  // `clip` (unlike `hidden`) does not create a scroll container, so ScrollTrigger pinning keeps working.
+  // `clip` instead of `hidden`: no scroll container is created, so pinning still works.
   overflow-x: clip;
 }
 
-// ---- Intro ------------------------------------------------------------------------------------
 .intro {
   display: grid;
   justify-items: center;
@@ -61,7 +60,6 @@ $tints: (
   color: color-alpha("navy", 0.8);
 }
 
-// ---- Grid -------------------------------------------------------------------------------------
 .grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -80,7 +78,6 @@ $tints: (
 }
 
 .cell {
-  // GSAP parallax (yPercent) lives here; the reveal lives on .card; hover lives on .tile.
   will-change: transform;
 }
 
@@ -106,7 +103,7 @@ $tints: (
   -webkit-tap-highlight-color: transparent;
   @include focus-ring;
 
-  // Hover shadow is a pseudo-element faded in with opacity, so we never animate box-shadow.
+  // The hover shadow is faded in with opacity instead of animating box-shadow.
   &::after {
     content: "";
     position: absolute;
@@ -211,7 +208,7 @@ $tints: (
   border-radius: 50%;
   background: color(navy);
   color: color(white);
-  // Visible by default on touch (no hover); slides in on hover-capable devices.
+  // Always visible on touch; slides in on hover on desktop.
   transition:
     transform $duration-base $ease-hover,
     opacity $duration-base $ease-hover;
@@ -222,7 +219,6 @@ $tints: (
   }
 }
 
-// ---- Featured (pinned on tablet/desktop) -------------------------------------------------------
 .featured {
   position: relative;
   min-height: 100svh;
@@ -296,7 +292,6 @@ $tints: (
   transform-origin: left center;
 }
 
-// ---- Footer -----------------------------------------------------------------------------------
 .footer {
   padding: 2.5rem $gutter;
   text-align: center;

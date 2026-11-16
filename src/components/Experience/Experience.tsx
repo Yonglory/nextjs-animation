@@ -8,23 +8,23 @@ import LazyMount from "@/components/LazyMount/LazyMount";
 import Preloader from "@/components/Preloader/Preloader";
 import SmoothScroll from "@/components/SmoothScroll/SmoothScroll";
 
-// The collection (and its ScrollTriggers) is a separate chunk, fetched when it nears the viewport.
+// Separate chunk: only downloaded when the collection is about to be scrolled into view.
 const Collection = dynamic(() => import("@/components/Collection/Collection"), { ssr: false });
 
-/** Client entry: preloader -> hero -> lazy collection, plus smooth scroll. */
 export default function Experience() {
-  const [revealed, setRevealed] = useState(false);
+  const [heroStarted, setHeroStarted] = useState(false);
 
   useEffect(() => {
-    // Always start at the top so the entrance is seen, even after a reload mid-page.
+    // Start at the top after a reload so the entrance is always seen.
     history.scrollRestoration = "manual";
     window.scrollTo(0, 0);
-    // Web fonts change text metrics, which moves ScrollTrigger start/end points.
+    // Font swaps change text height, so trigger positions need re-measuring.
     document.fonts.ready.then(() => ScrollTrigger.refresh());
   }, []);
 
-  const handleReveal = useCallback(() => setRevealed(true), []);
-  const handleDone = useCallback(() => {
+  const startHero = useCallback(() => setHeroStarted(true), []);
+
+  const unlockScroll = useCallback(() => {
     document.documentElement.classList.remove("is-loading");
     ScrollTrigger.refresh();
   }, []);
@@ -32,9 +32,9 @@ export default function Experience() {
   return (
     <>
       <SmoothScroll />
-      <Preloader onReveal={handleReveal} onDone={handleDone} />
+      <Preloader onReveal={startHero} onDone={unlockScroll} />
       <main>
-        <Hero started={revealed} />
+        <Hero started={heroStarted} />
         <LazyMount>
           <Collection />
         </LazyMount>

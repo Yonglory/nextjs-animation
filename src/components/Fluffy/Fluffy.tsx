@@ -18,7 +18,7 @@ export interface FluffyProps {
   color: FluffyColor;
   face?: FluffyFace;
   ears?: FluffyEars;
-  /** Number of fur tufts around the body outline. */
+  // Number of tufts around the body outline.
   bumps?: number;
   className?: string;
 }
@@ -32,7 +32,7 @@ const RY = 62;
 const round = (n: number) => Math.round(n * 100) / 100;
 const pathCache = new Map<number, string>();
 
-/** Scalloped ("fluffy") closed outline made of quadratic curves bulging outwards. */
+// Closed outline made of small outward curves, which gives the fluffy edge.
 function bodyPath(bumps: number): string {
   const cached = pathCache.get(bumps);
   if (cached) return cached;
@@ -130,7 +130,7 @@ function Face({ face, blush }: { face: FluffyFace; blush: string }) {
   );
 }
 
-/** Purely decorative SVG character. All variants are drawn in code: no image requests. */
+// Decorative character drawn in code, so there are no image files to load.
 export default function Fluffy({ color, face = "smile", ears = "none", bumps = 14, className }: FluffyProps) {
   const { body, shade } = FLUFFY_COLORS[color];
 
