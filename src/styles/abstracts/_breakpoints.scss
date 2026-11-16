@@ -1,0 +1,55 @@
+@use "sass:map";
+
+// Breakpoints mirrored in src/lib/motion.ts (MQ) so GSAP matchMedia and CSS agree.
+//   mobile  < 48rem
+//   tablet  48rem - 79.99rem
+//   desktop >= 80rem
+$breakpoints: (
+  "md": 48rem,
+  "lg": 80rem,
+) !default;
+
+$_epsilon: 0.01rem;
+
+@mixin up($bp) {
+  @media (min-width: map.get($breakpoints, $bp)) {
+    @content;
+  }
+}
+
+@mixin down($bp) {
+  $max: map.get($breakpoints, $bp) - $_epsilon;
+  @media (max-width: $max) {
+    @content;
+  }
+}
+
+// Only the tablet range.
+@mixin tablet-only {
+  $max: map.get($breakpoints, "lg") - $_epsilon;
+  @media (min-width: map.get($breakpoints, "md")) and (max-width: $max) {
+    @content;
+  }
+}
+
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}
+
+// Wrap hover styles so touch devices never get "sticky" hover states.
+@mixin hover {
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @content;
+    }
+  }
+}
+
+// Low-power mode is detected at runtime and written to <html data-perf="low">.
+@mixin low-power {
+  :global(html[data-perf="low"]) & {
+    @content;
+  }
+}

@@ -1,0 +1,34 @@
+@use "functions" as *;
+
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+@mixin focus-ring($offset: 5px) {
+  &:focus-visible {
+    outline: 3px solid color(coral);
+    outline-offset: $offset;
+  }
+}
+
+// Fill the parent absolutely.
+@mixin cover {
+  position: absolute;
+  inset: 0;
+}
+
+@mixin display-heading($min: 3rem, $max: 9rem) {
+  font-family: var(--font-display), "Baloo 2", system-ui, sans-serif;
+  font-weight: 800;
+  line-height: 0.88;
+  letter-spacing: -0.01em;
+  font-size: fluid($min, $max);
+}

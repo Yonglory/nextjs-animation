@@ -1,0 +1,319 @@
+@use "abstracts" as *;
+
+$tints: (
+  "butter": #fff1bd,
+  "mint": #cdf6e8,
+  "coral": #ffd9d3,
+  "lavender": #e5dcff,
+  "pink": #ffdceb,
+  "sky": #d3ecff,
+);
+
+.collection {
+  position: relative;
+  background: color(white);
+  // `clip` (unlike `hidden`) does not create a scroll container, so ScrollTrigger pinning keeps working.
+  overflow-x: clip;
+}
+
+// ---- Intro ------------------------------------------------------------------------------------
+.intro {
+  display: grid;
+  justify-items: center;
+  gap: clamp(0.75rem, 1.6vw, 1.25rem);
+  padding: clamp(5rem, 11vw, 10rem) $gutter clamp(2.5rem, 6vw, 5rem);
+  text-align: center;
+}
+
+.eyebrow {
+  padding: 0.35em 1em;
+  border-radius: 999px;
+  background: color(sky);
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.heading {
+  @include display-heading(2.9rem, 7.5rem);
+  display: grid;
+  justify-items: center;
+}
+
+.line {
+  display: block;
+  overflow: hidden;
+  padding: 0.06em 0.04em 0.12em;
+}
+
+.lineInner {
+  display: block;
+}
+
+.accent {
+  color: color(coral);
+}
+
+.lead {
+  max-width: 34ch;
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  color: color-alpha("navy", 0.8);
+}
+
+// ---- Grid -------------------------------------------------------------------------------------
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1.25rem, 2.4vw, 2.25rem);
+  width: min(100% - 2 * #{$gutter}, 78rem);
+  margin-inline: auto;
+  padding-bottom: clamp(4rem, 9vw, 8rem);
+
+  @include up(md) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include up(lg) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.cell {
+  // GSAP parallax (yPercent) lives here; the reveal lives on .card; hover lives on .tile.
+  will-change: transform;
+}
+
+.card {
+  height: 100%;
+}
+
+.tile {
+  --tint: #{color(sky)};
+
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 0.5rem;
+  width: 100%;
+  height: 100%;
+  min-height: clamp(21rem, 32vw, 27rem);
+  padding: clamp(1.1rem, 2vw, 1.6rem);
+  border-radius: clamp(1.5rem, 2.4vw, 2.25rem);
+  background: var(--tint);
+  text-align: left;
+  transition: transform $duration-base $ease-hover;
+  -webkit-tap-highlight-color: transparent;
+  @include focus-ring;
+
+  // Hover shadow is a pseudo-element faded in with opacity, so we never animate box-shadow.
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    box-shadow: 0 28px 50px -18px color-alpha("navy", 0.35);
+    opacity: 0;
+    transition: opacity $duration-base $ease-hover;
+  }
+
+  @include hover {
+    transform: translateY(-10px);
+
+    &::after {
+      opacity: 1;
+    }
+
+    .character {
+      animation: wiggle 0.8s ease-in-out;
+    }
+
+    .arrow {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  &:focus-visible {
+    transform: translateY(-10px);
+
+    &::after {
+      opacity: 1;
+    }
+
+    .arrow {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  &:active {
+    transform: translateY(-4px) scale(0.985);
+  }
+
+  @include reduced-motion {
+    transition-duration: 150ms;
+  }
+
+  @each $name, $tint in $tints {
+    &.tone-#{$name} {
+      --tint: #{$tint};
+    }
+  }
+}
+
+.number {
+  font-family: $font-display;
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  color: color-alpha("navy", 0.55);
+}
+
+.stage {
+  display: grid;
+  place-items: center;
+}
+
+.character {
+  display: block;
+  width: min(62%, 11rem);
+  transform-origin: 50% 90%;
+}
+
+.meta {
+  display: grid;
+  gap: 0.15rem;
+  padding-right: 3rem;
+}
+
+.name {
+  font-family: $font-display;
+  font-weight: 800;
+  font-size: clamp(1.5rem, 2.2vw, 2rem);
+  line-height: 1;
+}
+
+.trait {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: color-alpha("navy", 0.7);
+}
+
+.arrow {
+  position: absolute;
+  right: clamp(1.1rem, 2vw, 1.6rem);
+  bottom: clamp(1.1rem, 2vw, 1.6rem);
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0.6rem;
+  border-radius: 50%;
+  background: color(navy);
+  color: color(white);
+  // Visible by default on touch (no hover); slides in on hover-capable devices.
+  transition:
+    transform $duration-base $ease-hover,
+    opacity $duration-base $ease-hover;
+
+  @media (hover: hover) and (pointer: fine) {
+    transform: translateX(-10px);
+    opacity: 0;
+  }
+}
+
+// ---- Featured (pinned on tablet/desktop) -------------------------------------------------------
+.featured {
+  position: relative;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: 4rem $gutter;
+  background: color(navy);
+  color: color(white);
+  overflow: hidden;
+  contain: layout paint;
+}
+
+.featuredInner {
+  position: relative;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  width: min(100%, 72rem);
+
+  @include up(md) {
+    grid-template-columns: 1fr 1fr;
+    justify-items: start;
+  }
+}
+
+.bigWrap {
+  display: grid;
+  place-items: center;
+  width: 100%;
+}
+
+.big {
+  width: clamp(12rem, 34vw, 26rem);
+  will-change: transform;
+}
+
+.words {
+  @include display-heading(3.4rem, 8rem);
+  display: grid;
+  gap: 0.05em;
+  color: color(white);
+
+  li {
+    will-change: transform, opacity;
+
+    &:last-child {
+      color: color(butter);
+    }
+  }
+}
+
+.meter {
+  position: absolute;
+  inset: auto 0 -2.5rem;
+  height: 0.4rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: color-alpha("white", 0.15);
+
+  @include down(md) {
+    display: none;
+  }
+}
+
+.meterFill {
+  width: 100%;
+  height: 100%;
+  background: color(coral);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+// ---- Footer -----------------------------------------------------------------------------------
+.footer {
+  padding: 2.5rem $gutter;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: color-alpha("navy", 0.7);
+}
+
+@keyframes wiggle {
+  0%,
+  100% {
+    transform: rotate(0) scale(1);
+  }
+  25% {
+    transform: rotate(-7deg) scale(1.06);
+  }
+  60% {
+    transform: rotate(5deg) scale(1.04);
+  }
+}

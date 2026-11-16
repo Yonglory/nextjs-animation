@@ -1,0 +1,203 @@
+@use "abstracts" as *;
+
+.hero {
+  --unit: clamp(5.5rem, 24vw, 9rem);
+
+  position: relative;
+  height: 100svh;
+  min-height: 34rem;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 80% at 50% 0%, color(sky) 0%, color(cloud) 55%, color(white) 100%);
+  // Isolate layout/paint so scroll-linked transforms never invalidate the rest of the page.
+  contain: layout paint;
+
+  @include up(md) {
+    --unit: clamp(8rem, 17vw, 12rem);
+  }
+
+  @include up(lg) {
+    --unit: clamp(9rem, 13vw, 15rem);
+  }
+}
+
+// The scrubbed element (scale/opacity while scrolling away).
+.stage {
+  @include cover;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.layer {
+  @include cover;
+  pointer-events: none;
+  will-change: transform;
+
+  &:nth-child(1) {
+    z-index: 1;
+  }
+  &:nth-child(2) {
+    z-index: 3;
+  }
+  &:nth-child(3) {
+    z-index: 4;
+  }
+}
+
+.slot {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: calc(var(--s) * var(--unit));
+  // The CSS `translate` property is independent from GSAP's `transform`.
+  translate: -50% -50%;
+
+  @include down(md) {
+    left: var(--mx);
+    top: var(--my);
+  }
+
+  // Tiers: fewer characters on smaller / weaker devices (display:none = zero cost).
+  &[data-tier="2"] {
+    display: none;
+
+    @include up(md) {
+      display: block;
+    }
+  }
+
+  &[data-tier="3"] {
+    display: none;
+
+    @include up(lg) {
+      display: block;
+    }
+  }
+
+  @include low-power {
+    &[data-tier="3"] {
+      display: none !important;
+    }
+  }
+
+  @include low-power {
+    @include tablet-only {
+      &[data-tier="2"] {
+        display: none !important;
+      }
+    }
+  }
+}
+
+.pop {
+  pointer-events: auto;
+  cursor: pointer;
+  transform-origin: 50% 90%;
+  will-change: transform, opacity;
+}
+
+// Idle bobbing runs forever, so it gets its own compositor layer.
+.float {
+  will-change: transform;
+}
+
+.copy {
+  @include cover;
+  z-index: 2;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: clamp(1rem, 2.4vw, 2rem);
+  padding: 0 $gutter;
+  text-align: center;
+}
+
+.title {
+  @include display-heading(3.4rem, 9.5rem);
+  display: grid;
+  justify-items: center;
+}
+
+// Masks the line so the text slides up from below its own baseline.
+.line {
+  display: block;
+  overflow: hidden;
+  padding: 0.06em 0.04em 0.12em;
+}
+
+.lineInner {
+  display: block;
+}
+
+.accent {
+  color: color(coral);
+}
+
+.sub {
+  max-width: 26ch;
+  font-weight: 700;
+  font-size: clamp(1rem, 1.5vw, 1.35rem);
+  line-height: 1.35;
+  color: color-alpha("navy", 0.8);
+}
+
+.header {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: $z-chrome;
+  display: flex;
+  padding: $gutter;
+  pointer-events: none;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  pointer-events: auto;
+  font-family: $font-display;
+  font-weight: 800;
+  font-size: clamp(1.4rem, 2.2vw, 2.1rem);
+  line-height: 1;
+  @include focus-ring;
+  border-radius: 1rem;
+
+  @include hover {
+    .logoMark {
+      transform: rotate(-12deg) scale(1.12);
+    }
+  }
+}
+
+.logoMark {
+  width: 1.9em;
+  transition: transform $duration-base $ease-hover;
+
+  @include reduced-motion {
+    transition-duration: 150ms;
+  }
+}
+
+.footer {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: $z-chrome;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-left: $gutter;
+  pointer-events: none;
+
+  > * {
+    pointer-events: auto;
+  }
+
+  > ul {
+    padding-bottom: clamp(1.25rem, 3vw, 2.6rem);
+  }
+}
+
+.cta {
+  // Keep the wrapper out of the way of the button's own hover transform.
+  display: block;
+}

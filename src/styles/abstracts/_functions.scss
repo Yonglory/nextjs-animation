@@ -1,0 +1,19 @@
+@use "sass:map";
+@use "sass:math";
+@use "tokens" as *;
+
+@function color($name) {
+  @return var(--color-#{$name});
+}
+
+@function color-alpha($name, $alpha) {
+  @return rgba(map.get($colors, $name), $alpha);
+}
+
+// Linear interpolation between two rem sizes across a viewport range, as clamp().
+// fluid(2rem, 5rem) -> scales from 2rem at 23.4rem viewport to 5rem at 90rem viewport.
+@function fluid($min, $max, $min-vw: 23.4375rem, $max-vw: 90rem) {
+  $slope: math.div(math.div($max, 1rem) - math.div($min, 1rem), math.div($max-vw, 1rem) - math.div($min-vw, 1rem));
+  $intercept: math.div($min, 1rem) - $slope * math.div($min-vw, 1rem);
+  @return clamp(#{$min}, #{$intercept * 1rem} + #{$slope * 100}vw, #{$max});
+}

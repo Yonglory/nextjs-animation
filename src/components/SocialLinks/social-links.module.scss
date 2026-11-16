@@ -1,0 +1,52 @@
+@use "abstracts" as *;
+
+$size: clamp(2.5rem, 3.5vw, 3.25rem);
+
+.list {
+  display: flex;
+  gap: clamp(0.6rem, 1.2vw, 1rem);
+}
+
+.link {
+  display: grid;
+  place-items: center;
+  width: $size;
+  height: $size;
+  border-radius: 50%;
+  background: color(navy);
+  color: color(white);
+  box-shadow: 0 8px 24px color-alpha("navy", 0.18);
+  transition:
+    transform $duration-base $ease-hover,
+    background-color $duration-base $ease-hover;
+  -webkit-tap-highlight-color: transparent;
+
+  svg {
+    width: 46%;
+    height: 46%;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  @include hover {
+    transform: translateY(-4px) scale(1.1);
+    background: color(coral);
+  }
+
+  &:active {
+    transform: scale(0.94);
+  }
+
+  &:focus-visible {
+    outline: 3px solid color(coral);
+    outline-offset: 5px;
+    transform: translateY(-4px) scale(1.1);
+  }
+
+  @include reduced-motion {
+    transition-duration: 150ms;
+  }
+}
