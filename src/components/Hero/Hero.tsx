@@ -13,13 +13,6 @@ interface HeroProps {
   started: boolean;
 }
 
-// Each character is wrapped in nested elements and every wrapper gets only one kind of
-// transform, so GSAP tweens never overwrite each other:
-//   [data-layer]  pointer + scroll parallax
-//   .slot         position on the stage
-//   [data-pop]    entrance and hover hop
-//   [data-float]  idle bobbing
-// The same rule applies to buttons: GSAP animates the wrapper, CSS :hover animates the child.
 export default function Hero({ started }: HeroProps) {
   const root = useRef<HTMLElement>(null);
 

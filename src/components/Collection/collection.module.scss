@@ -12,7 +12,6 @@ $tints: (
 .collection {
   position: relative;
   background: color(white);
-  // `clip` instead of `hidden`: no scroll container is created, so pinning still works.
   overflow-x: clip;
 }
 

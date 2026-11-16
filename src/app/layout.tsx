@@ -27,7 +27,6 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    // `is-loading` locks scrolling until the preloader is gone (removed in Experience).
     <html lang="en" className={`${display.variable} ${body.variable} is-loading`}>
       <head>
         <noscript>

@@ -5,7 +5,6 @@ import { scrollToTarget } from "@/lib/scroll";
 import styles from "./button.module.scss";
 
 interface ButtonProps {
-  // In-page anchor such as "#collection".
   href: string;
   children: ReactNode;
 }

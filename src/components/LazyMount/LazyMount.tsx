@@ -5,11 +5,9 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 interface LazyMountProps {
   children: ReactNode;
   rootMargin?: string;
-  // Keeps the page tall enough to scroll to before the content is mounted.
   minHeight?: string;
 }
 
-// Renders its children the first time the placeholder gets near the viewport.
 export default function LazyMount({ children, rootMargin = "25% 0px", minHeight = "100svh" }: LazyMountProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);

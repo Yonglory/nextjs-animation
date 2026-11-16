@@ -9,9 +9,7 @@ import Fluffy from "@/components/Fluffy/Fluffy";
 import styles from "./preloader.module.scss";
 
 interface PreloaderProps {
-  // Called while the curtain is still lifting, so the hero entrance overlaps it.
   onReveal: () => void;
-  // Called once the curtain is gone.
   onDone: () => void;
 }
 
